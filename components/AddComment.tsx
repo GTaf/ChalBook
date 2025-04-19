@@ -5,12 +5,13 @@ import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useState, useEffect } from 'react';
 import { supabase } from './Supabase';
 import { Session } from '@supabase/supabase-js';
-import { theme } from '../theme';
+import { theme, theme_spacing } from '../theme';
 
 interface AddCommentProp {
     isVisible: boolean,
     onClose: ((event: GestureResponderEvent) => void),
     book_id: number,
+    onCommentAdded?: () => void,
 }
 
 interface registerCommentProp {
@@ -19,7 +20,7 @@ interface registerCommentProp {
     content_type: string,
 }
 
-export default function AddComment({ isVisible, onClose, book_id }: AddCommentProp) {
+export default function AddComment({ isVisible, onClose, book_id, onCommentAdded }: AddCommentProp) {
     const [comment, setComment] = useState('');
     const [loading, setLoading] = useState(false);
     const [session, setSession] = useState<Session | null>(null);
@@ -44,6 +45,10 @@ export default function AddComment({ isVisible, onClose, book_id }: AddCommentPr
         const { error } = await supabase.from('Comments').insert({ book_id, user_id, content, content_type });
         console.log("Adding comment : ", error, { book_id, user_id, content });
         setLoading(false);
+        
+        if (!error && onCommentAdded) {
+            onCommentAdded();
+        }
     }
 
     return (
@@ -52,19 +57,32 @@ export default function AddComment({ isVisible, onClose, book_id }: AddCommentPr
                 <View style={styles.titleContainer}>
                     <Text style={styles.title}>Ajouter un nouveau commentaire</Text>
                     <Pressable onPress={onClose}>
-                        <MaterialIcons name="close" color="#fff" size={22} />
+                        <MaterialIcons name="close" color={theme.colors.card} size={22} />
                     </Pressable>
                 </View>
-                <Input label="Commentaire" onChangeText={(text) => setComment(text)} inputStyle={styles.inputText} labelStyle={styles.inputText} />
+                <Input 
+                    label="Commentaire" 
+                    onChangeText={(text) => setComment(text)} 
+                    inputStyle={styles.inputText} 
+                    labelStyle={styles.label}
+                />
                 <ButtonGroup
                     buttons={labels}
                     selectedIndex={selectedIndex}
                     onPress={(value) => {
                         setSelectedIndex(value);
                     }}
-                    containerStyle={{ marginBottom: 20, }}
+                    containerStyle={{ marginBottom: 20 }}
                 />
-                <Button title="Ajouter" disabled={loading} color={theme.colors.primary} onPress={(x) => {registerComment({ book_id, content: comment, content_type: labels[selectedIndex] }); onClose(x)}} />
+                <Button 
+                    title="Ajouter" 
+                    disabled={loading} 
+                    onPress={(x) => {
+                        registerComment({ book_id, content: comment, content_type: labels[selectedIndex] }); 
+                        onClose(x);
+                    }} 
+                    buttonStyle={styles.button}
+                />
             </View>
         </Modal>
     );
@@ -82,7 +100,7 @@ const styles = StyleSheet.create({
     },
     titleContainer: {
         height: '10%',
-        backgroundColor: theme.colors.card,
+        backgroundColor: theme.colors.primary,
         borderTopRightRadius: 10,
         borderTopLeftRadius: 10,
         paddingHorizontal: 20,
@@ -91,7 +109,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
     },
     title: {
-        color: theme.colors.text,
+        color: theme.colors.card,
         fontWeight: '700',
     },
     pickerContainer: {
@@ -103,5 +121,14 @@ const styles = StyleSheet.create({
     },
     inputText: {
         color: theme.colors.text,
+    },
+    label: {
+        color: theme.colors.text,
+    },
+    button: {
+        backgroundColor: theme.colors.primary,
+        borderRadius: 8,
+        padding: 16,
+        marginHorizontal: 16,
     },
 });
