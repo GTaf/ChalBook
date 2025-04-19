@@ -1,5 +1,6 @@
 import { useLocalSearchParams } from 'expo-router';
 import { Text, View, Image, StyleSheet, FlatList } from 'react-native';
+import { StatusBar } from 'expo-status-bar';
 import { Button } from '@rneui/themed';
 import { supabase } from '../components/Supabase';
 import { useEffect, useState, useCallback } from 'react';
@@ -90,6 +91,7 @@ export default function Page() {
       >
         Nouveau commentaire
       </Button>
+      <StatusBar style="auto" />
     </View>
   );
 }

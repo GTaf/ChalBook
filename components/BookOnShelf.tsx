@@ -10,14 +10,13 @@ interface BookOnShelfProp {
 }
 
 export default function BookOnShelf({ title, cover, book_id }: BookOnShelfProp) {
-    console.log(title, cover);
     return (
         <View style={styles.outerContainer}>
         <Link href={{pathname: "/[book]", params: {book_id: book_id}}} asChild>
             <Pressable>
             <View style={styles.innerContainer}>
-                <Text style={styles.title}>{title}</Text>
                 {cover ? <Image source={ {uri : cover} } style={styles.bookCover} /> : <></>}
+                <Text style={styles.title} numberOfLines={2}>{title}</Text>
             </View>
             </Pressable>
         </Link>
@@ -27,10 +26,10 @@ export default function BookOnShelf({ title, cover, book_id }: BookOnShelfProp) 
 
 const styles = StyleSheet.create({
     bookCover: {
-        height: 300,
-        width: 150,
+        height: 180,
+        width: 120,
         resizeMode: 'contain',
-        margin: theme_spacing.sm,
+        marginBottom: theme_spacing.sm,
     },
     outerContainer: {
         display: 'flex',
@@ -38,24 +37,21 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         borderWidth: 1,
         borderColor: theme.colors.border,
-        borderRadius: 10,
-        width: 200,
-        backgroundColor: theme.colors.background,
-        marginBottom: theme_spacing.xl,
-        marginTop: theme_spacing.xl,
-        marginRight: theme_spacing.xs,
-        marginLeft: theme_spacing.xs,
+        borderRadius: 8,
+        width: 140,
+        backgroundColor: theme.colors.card,
+        margin: theme_spacing.xs,
+        padding: theme_spacing.sm,
     },
     innerContainer: {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: theme_spacing.sm,
     },
     title: {
         ...theme.fonts.regular,
         color: theme.colors.text,
         textAlign: 'center',
-        marginBottom: theme_spacing.sm,
+        fontSize: 12,
     },
 });
