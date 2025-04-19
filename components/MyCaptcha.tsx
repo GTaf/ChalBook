@@ -2,6 +2,7 @@ import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { useState, useRef } from 'react';
 import ConfirmHcaptcha from '@hcaptcha/react-native-hcaptcha';
 import { WebViewMessageEvent } from 'react-native-webview';
+import { theme, theme_spacing } from '../theme';
 
 // demo sitekey
 const siteKey = '00751ca2-bf8d-4e80-860c-41e38ec69538';
@@ -57,13 +58,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    backgroundColor: '#ecf0f1',
-    padding: 8,
+    backgroundColor: theme.colors.background,
+    padding: theme_spacing.sm,
+    borderRadius: 8,
+    //...theme.shadows.small,
   },
   paragraph: {
     margin: 0,
-    fontSize: 18,
-    fontWeight: 'bold',
+    ...theme.fonts.regular,
+    color: theme.colors.primary,
     textAlign: 'center',
   },
 });
