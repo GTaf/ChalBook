@@ -4,9 +4,10 @@ import BookShelf from '../components/Bookshelf';
 import { useState, useEffect } from 'react';
 import { Session } from '@supabase/supabase-js';
 import { supabase } from '../components/Supabase';
-
-import {  useFonts, RobotoMono_700Bold } from '@expo-google-fonts/roboto-mono';
+import { useFonts, RobotoMono_700Bold } from '@expo-google-fonts/roboto-mono';
 import Auth from '../components/Auth';
+import { ThemeProvider } from '../components/ThemeProvider';
+import { theme, theme_spacing } from '../theme';
 
 export default function App() {
   const [session, setSession] = useState<Session | null>(null);
@@ -31,26 +32,33 @@ export default function App() {
   }
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>ChalBook</Text>
-      {session && session.user ? <Text>{session.user.id}</Text> : <Auth/>}
-      <BookShelf/>
-      <StatusBar style="auto" />
-    </View>
+    <ThemeProvider>
+      <View style={styles.container}>
+        <Text style={styles.text}>ChalBook</Text>
+        {session && session.user ? <Text style={styles.userText}>User id: {session.user.id}</Text> : <Auth/>}
+        <BookShelf/>
+        <StatusBar style="auto" />
+      </View>
+    </ThemeProvider>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex : 1,
+    flex: 1,
     display: 'flex',
-    backgroundColor: 'antiquewhite',
+    backgroundColor: theme.colors.background,
     alignItems: 'center',
     justifyContent: 'center',
   },
   text: {
-    flex: 1,
+    // flex: 1,
     fontFamily: 'RobotoMono_700Bold',
-    fontSize: 40
+    color: theme.colors.primary,
+    marginTop: theme_spacing.xl,
+  },
+  userText: {
+    color: theme.colors.text,
+    fontWeight: theme.fonts.regular.fontWeight,
   }
 });

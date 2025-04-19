@@ -39,21 +39,24 @@ export type Database = {
       Comments: {
         Row: {
           book_id: number | null
-          content: string | null
+          content: string
+          content_type: string
           created_at: string
           id: number
           user_id: string | null
         }
         Insert: {
           book_id?: number | null
-          content?: string | null
+          content?: string
+          content_type: string
           created_at?: string
           id?: number
           user_id?: string | null
         }
         Update: {
           book_id?: number | null
-          content?: string | null
+          content?: string
+          content_type?: string
           created_at?: string
           id?: number
           user_id?: string | null

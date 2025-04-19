@@ -4,6 +4,7 @@ import AddBook from "./AddBook";
 import { useState, useEffect } from "react";
 import { supabase } from "./Supabase";
 import { Tables } from "../app/database.type";
+import { theme, theme_spacing } from "../theme";
 
 export default function BookShelf() {
     const [isModalVisible, setIsModalVisible] = useState(false);
@@ -29,8 +30,12 @@ export default function BookShelf() {
                 renderItem={({ item }) => <BookOnShelf title={item.title ? item.title : "Livre sans titre"} cover={item.cover_url} book_id={item.id.toString()} />}
                 style={styles.list}
             />
-            <Button title='Je lis un nouveau livre' onPress={() => setIsModalVisible(true)}></Button>
-            <AddBook isVisible={isModalVisible} onClose={(_) => setIsModalVisible(false)}></AddBook>
+            <Button 
+                title='Je lis un nouveau livre' 
+                onPress={() => setIsModalVisible(true)}
+                color={theme.colors.primary}
+            />
+            <AddBook isVisible={isModalVisible} onClose={(_) => setIsModalVisible(false)} />
         </View>
     )
 }
@@ -41,8 +46,12 @@ const styles = StyleSheet.create({
         width: '100%',
         alignItems: 'center',
         justifyContent: 'center',
-        margin: '5%',
+        margin: theme_spacing.md,
+        backgroundColor: theme.colors.background,
+        borderRadius: 8,
     },
     list: {
+        width: '100%',
+        paddingHorizontal: theme_spacing.md,
     },
 });

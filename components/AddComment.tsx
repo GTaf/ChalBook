@@ -1,27 +1,31 @@
-import { Input, Button } from '@rneui/themed';
+import { Input, Button, ButtonGroup } from '@rneui/themed';
 import { Modal, View, Text, Pressable, StyleSheet } from 'react-native';
 import { GestureResponderEvent } from 'react-native';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useState, useEffect } from 'react';
 import { supabase } from './Supabase';
 import { Session } from '@supabase/supabase-js';
+import { theme } from '../theme';
 
 interface AddCommentProp {
     isVisible: boolean,
-    onClose: ((event: GestureResponderEvent) => void) | null | undefined,
+    onClose: ((event: GestureResponderEvent) => void),
     book_id: number,
-    onAdd: null,
 }
 
 interface registerCommentProp {
     book_id: number,
     content: string,
+    content_type: string,
 }
 
-export default function AddComment({ isVisible, onClose, book_id, onAdd }: AddCommentProp) {
+export default function AddComment({ isVisible, onClose, book_id }: AddCommentProp) {
     const [comment, setComment] = useState('');
     const [loading, setLoading] = useState(false);
     const [session, setSession] = useState<Session | null>(null);
+    const [selectedIndex, setSelectedIndex] = useState(0);
+
+    let labels = ['comment', 'quote', 'idea'];
 
     useEffect(() => {
         supabase.auth.getSession().then(({ data: { session } }) => {
@@ -34,10 +38,10 @@ export default function AddComment({ isVisible, onClose, book_id, onAdd }: AddCo
     }, [])
 
 
-    async function registerComment({ book_id, content }: registerCommentProp) {
+    async function registerComment({ book_id, content, content_type }: registerCommentProp) {
         setLoading(true);
         let user_id = session && session.user ? session.user.id : "";
-        const { error } = await supabase.from('Comments').insert({ book_id, user_id, content });
+        const { error } = await supabase.from('Comments').insert({ book_id, user_id, content, content_type });
         console.log("Adding comment : ", error, { book_id, user_id, content });
         setLoading(false);
     }
@@ -51,8 +55,16 @@ export default function AddComment({ isVisible, onClose, book_id, onAdd }: AddCo
                         <MaterialIcons name="close" color="#fff" size={22} />
                     </Pressable>
                 </View>
-                <Input label="Commentaire" onChangeText={(text) => setComment(text)} inputStyle={styles.onputText} />
-                <Button title="Ajouter" disabled={loading} onPress={() => registerComment({ book_id, content : comment })} />
+                <Input label="Commentaire" onChangeText={(text) => setComment(text)} inputStyle={styles.inputText} labelStyle={styles.inputText} />
+                <ButtonGroup
+                    buttons={labels}
+                    selectedIndex={selectedIndex}
+                    onPress={(value) => {
+                        setSelectedIndex(value);
+                    }}
+                    containerStyle={{ marginBottom: 20, }}
+                />
+                <Button title="Ajouter" disabled={loading} color={theme.colors.primary} onPress={(x) => {registerComment({ book_id, content: comment, content_type: labels[selectedIndex] }); onClose(x)}} />
             </View>
         </Modal>
     );
@@ -62,7 +74,7 @@ const styles = StyleSheet.create({
     modalContent: {
         height: '50%',
         width: '100%',
-        backgroundColor: '#25292e',
+        backgroundColor: theme.colors.card,
         borderTopRightRadius: 18,
         borderTopLeftRadius: 18,
         position: 'absolute',
@@ -70,7 +82,7 @@ const styles = StyleSheet.create({
     },
     titleContainer: {
         height: '10%',
-        backgroundColor: '#464C55',
+        backgroundColor: theme.colors.card,
         borderTopRightRadius: 10,
         borderTopLeftRadius: 10,
         paddingHorizontal: 20,
@@ -79,8 +91,8 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
     },
     title: {
-        color: '#fff',
-        fontSize: 16,
+        color: theme.colors.text,
+        fontWeight: '700',
     },
     pickerContainer: {
         flexDirection: 'row',
@@ -89,7 +101,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 50,
         paddingVertical: 20,
     },
-    onputText: {
-        color: "#fff",
+    inputText: {
+        color: theme.colors.text,
     },
 });

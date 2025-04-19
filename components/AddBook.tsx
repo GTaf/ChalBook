@@ -5,6 +5,7 @@ import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useState, useEffect } from 'react';
 import { supabase } from './Supabase';
 import { Session } from '@supabase/supabase-js';
+import { theme, theme_spacing } from '../theme';
 
 interface AddBookProp {
     isVisible: boolean,
@@ -47,12 +48,27 @@ export default function AddBook({ isVisible, onClose }: AddBookProp) {
                 <View style={styles.titleContainer}>
                     <Text style={styles.title}>Ajouter un nouveau livre</Text>
                     <Pressable onPress={onClose}>
-                        <MaterialIcons name="close" color="#fff" size={22} />
+                        <MaterialIcons name="close" color={theme.colors.text} size={22} />
                     </Pressable>
                 </View>
-                <Input label="Titre" onChangeText={(text) => setTitle(text)} inputStyle={styles.onputText} />
-                <Input label="Auteur" onChangeText={(text) => setAuthor(text)} inputStyle={styles.onputText} />
-                <Button title="Ajouter" disabled={loading} onPress={() => registerBook({ title, author })} />
+                <Input 
+                    label="Titre" 
+                    onChangeText={(text) => setTitle(text)} 
+                    inputStyle={styles.inputText}
+                    labelStyle={styles.label}
+                />
+                <Input 
+                    label="Auteur" 
+                    onChangeText={(text) => setAuthor(text)} 
+                    inputStyle={styles.inputText}
+                    labelStyle={styles.label}
+                />
+                <Button 
+                    title="Ajouter" 
+                    disabled={loading} 
+                    onPress={() => registerBook({ title, author })}
+                    buttonStyle={styles.button}
+                />
             </View>
         </Modal>
     );
@@ -62,7 +78,7 @@ const styles = StyleSheet.create({
     modalContent: {
         height: '50%',
         width: '100%',
-        backgroundColor: '#25292e',
+        backgroundColor: theme.colors.primary,
         borderTopRightRadius: 18,
         borderTopLeftRadius: 18,
         position: 'absolute',
@@ -70,26 +86,35 @@ const styles = StyleSheet.create({
     },
     titleContainer: {
         height: '10%',
-        backgroundColor: '#464C55',
+        backgroundColor: theme.colors.primary,
         borderTopRightRadius: 10,
         borderTopLeftRadius: 10,
-        paddingHorizontal: 20,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
+        paddingHorizontal: theme_spacing.lg,
     },
     title: {
-        color: '#fff',
-        fontSize: 16,
+        color: theme.colors.text,
+        ...theme.fonts.regular,
     },
     pickerContainer: {
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        paddingHorizontal: 50,
-        paddingVertical: 20,
+        paddingHorizontal: theme_spacing.xl,
+        paddingVertical: theme_spacing.xl,
     },
-    onputText: {
-        color: "#fff",
+    inputText: {
+        color: theme.colors.text,
+    },
+    label: {
+        color: theme.colors.text,
+    },
+    button: {
+        backgroundColor: theme.colors.primary,
+        borderRadius: 8,
+        padding: theme_spacing.md,
+        marginHorizontal: theme_spacing.md,
     },
 });
