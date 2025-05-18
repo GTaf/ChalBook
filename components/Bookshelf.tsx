@@ -3,7 +3,7 @@ import BookOnShelf from "./BookOnShelf";
 import AddBook from "./AddBook";
 import { useState, useEffect } from "react";
 import { supabase } from "./Supabase";
-import { Tables } from "../app/database.type";
+import { Tables } from "./database.type";
 import { theme, theme_spacing } from "../theme";
 
 export default function BookShelf() {

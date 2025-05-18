@@ -15,10 +15,6 @@ export default function TabLayout() {
                 title: 'Comments',
                 tabBarIcon: ({ color }) => <FontAwesome size={28} name="comments" color={color} />,
               }}/>
-            <Tabs.Screen name="[book]"
-            options={{
-                href: null,
-              }}/>
         </Tabs>
     );
 }

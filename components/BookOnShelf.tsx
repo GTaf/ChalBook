@@ -12,7 +12,7 @@ interface BookOnShelfProp {
 export default function BookOnShelf({ title, cover, book_id }: BookOnShelfProp) {
     return (
         <View style={styles.outerContainer}>
-        <Link href={{pathname: "/[book]", params: {book_id: book_id}}} asChild>
+        <Link href={{pathname: "/books/[book]", params: {book_id: book_id}}} asChild>
             <Pressable>
             <View style={styles.innerContainer}>
                 {cover ? <Image source={ {uri : cover} } style={styles.bookCover} /> : <></>}

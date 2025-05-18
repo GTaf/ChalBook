@@ -1,15 +1,16 @@
-import { useLocalSearchParams } from 'expo-router';
-import { Text, View, Image, StyleSheet, FlatList } from 'react-native';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import { Text, View, Image, StyleSheet, FlatList, Pressable } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { Button } from '@rneui/themed';
-import { supabase } from '../components/Supabase';
+import { supabase } from '../../components/Supabase';
 import { useEffect, useState, useCallback } from 'react';
-import { Tables } from './database.type';
-import AddComment from "../components/AddComment";
-import Comment from '../components/Comment';
+import { Tables } from '../../components/database.type';
+import AddComment from "../../components/AddComment";
+import Comment from '../../components/Comment';
 import { useFonts, RobotoMono_700Bold } from '@expo-google-fonts/roboto-mono';
 import React from 'react';
-import { theme } from '../theme';
+import { theme } from '../../theme';
+import { MaterialIcons } from '@expo/vector-icons';
 
 export default function Page() {
   const { book_id } = useLocalSearchParams();
@@ -19,6 +20,7 @@ export default function Page() {
   const [bookId, setBookId] = useState<number | null>(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [comments, setComments] = useState<([string, string])[]>([]);
+  const router = useRouter();
 
   let [fontsLoaded] = useFonts({
     RobotoMono_700Bold,
@@ -66,6 +68,11 @@ export default function Page() {
         <View style={styles.titleContainer}>
           <Text style={styles.title} numberOfLines={2}>{name}</Text>
           <Text style={styles.author}>{author}</Text>
+        </View>
+        <View>
+          <Pressable onPress={()=>{router.push(`/books/${book_id}/edit`)}}>
+            <MaterialIcons name="mode-edit" color={theme.colors.text} size={22} />
+          </Pressable>
         </View>
       </View>
 

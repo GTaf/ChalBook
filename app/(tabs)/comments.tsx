@@ -1,5 +1,5 @@
 import { View, Text, FlatList } from "react-native";
-import { Tables } from "../database.type";
+import { Tables } from "../../components/database.type";
 import { useEffect, useState } from "react";
 import { supabase } from "../../components/Supabase";
 import Comment from "../../components/Comment";
@@ -15,7 +15,7 @@ export default function Comments() {
             }
         })
     }, []);
-    
+
     return (
         <View>
             <Text>Comments</Text>
