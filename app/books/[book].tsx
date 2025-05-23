@@ -1,7 +1,7 @@
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { Text, View, Image, StyleSheet, FlatList, Pressable } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
-import { Button } from '@rneui/themed';
+import { Button } from 'tamagui';
 import { supabase } from '../../components/Supabase';
 import { useEffect, useState, useCallback } from 'react';
 import { Tables } from '../../components/database.type';
@@ -94,7 +94,7 @@ export default function Page() {
       <Button 
         color={theme.colors.primary} 
         onPress={() => setIsModalVisible(true)}
-        buttonStyle={styles.addButton}
+        // buttonStyle={styles.addButton}
       >
         Nouveau commentaire
       </Button>

@@ -1,11 +1,11 @@
-import { Input, Button, ButtonGroup } from '@rneui/themed';
-import { Modal, View, Text, Pressable, StyleSheet } from 'react-native';
+import { Input, Button, ToggleGroup, styled, SizableText, Text} from 'tamagui';
+import { Modal, View, Pressable, StyleSheet } from 'react-native';
 import { GestureResponderEvent } from 'react-native';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useState, useEffect } from 'react';
 import { supabase } from './Supabase';
 import { Session } from '@supabase/supabase-js';
-import { theme, theme_spacing } from '../theme';
+import { theme } from '../theme';
 
 interface AddCommentProp {
     isVisible: boolean,
@@ -19,6 +19,15 @@ interface registerCommentProp {
     content: string,
     content_type: string,
 }
+
+const Item = styled(ToggleGroup.Item, {
+    color: '$color10',
+  
+    focusStyle: {
+      color: '$color0',
+      backgroundColor: '$color12',
+    },
+  })
 
 export default function AddComment({ isVisible, onClose, book_id, onCommentAdded }: AddCommentProp) {
     const [comment, setComment] = useState('');
@@ -61,28 +70,21 @@ export default function AddComment({ isVisible, onClose, book_id, onCommentAdded
                     </Pressable>
                 </View>
                 <Input 
-                    label="Commentaire" 
-                    onChangeText={(text) => setComment(text)} 
-                    inputStyle={styles.inputText} 
-                    labelStyle={styles.label}
+                    placeholder="Commentaire" 
+                    onChangeText={(text) => setComment(text)}
                 />
-                <ButtonGroup
-                    buttons={labels}
-                    selectedIndex={selectedIndex}
-                    onPress={(value) => {
-                        setSelectedIndex(value);
-                    }}
-                    containerStyle={{ marginBottom: 20 }}
-                />
+                <ToggleGroup type="single" defaultValue="comment" onValueChange={(value) => {setSelectedIndex(labels.indexOf(value)); console.log(value)}}>
+                    <Item value="comment"><SizableText>Commentaire</SizableText></Item>
+                    <Item value="quote"><SizableText>Citation</SizableText></Item>
+                    <Item value="idea"><SizableText>Idée</SizableText></Item>
+                </ToggleGroup>
                 <Button 
-                    title="Ajouter" 
                     disabled={loading} 
                     onPress={(x) => {
                         registerComment({ book_id, content: comment, content_type: labels[selectedIndex] }); 
                         onClose(x);
                     }} 
-                    buttonStyle={styles.button}
-                />
+                ><Text>Ajouter</Text></Button>
             </View>
         </Modal>
     );

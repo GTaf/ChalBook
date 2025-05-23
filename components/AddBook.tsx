@@ -1,4 +1,4 @@
-import { Input, Button } from '@rneui/themed';
+import { Input, Button } from 'tamagui';
 import { Modal, View, Text, Pressable, StyleSheet } from 'react-native';
 import { GestureResponderEvent } from 'react-native';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
@@ -52,23 +52,17 @@ export default function AddBook({ isVisible, onClose }: AddBookProp) {
                     </Pressable>
                 </View>
                 <Input 
-                    label="Titre" 
+                    placeholder="Titre" 
                     onChangeText={(text) => setTitle(text)} 
-                    inputStyle={styles.inputText}
-                    labelStyle={styles.label}
                 />
                 <Input 
-                    label="Auteur" 
+                    placeholder="Auteur" 
                     onChangeText={(text) => setAuthor(text)} 
-                    inputStyle={styles.inputText}
-                    labelStyle={styles.label}
                 />
                 <Button 
-                    title="Ajouter" 
                     disabled={loading} 
                     onPress={() => registerBook({ title, author })}
-                    buttonStyle={styles.button}
-                />
+                >Ajouter</Button>
             </View>
         </Modal>
     );

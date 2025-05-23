@@ -6,6 +6,7 @@ npx expo start --tunnel
 
 # TODO
 - [ ] Add cover through application
+- [ ] Delete book
 - [x] Edit book possibility
 - [ ] Varying style between comments
 - [ ] Adapt number of rows to screen on BookShelf tab

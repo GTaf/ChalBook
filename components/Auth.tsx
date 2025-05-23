@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { Alert, StyleSheet, View, Dimensions } from 'react-native'
 import { supabase } from './Supabase'
-import { Button, Input } from '@rneui/themed'
-import MyCaptcha from './MyCaptcha';
+import { Button, Input } from 'tamagui'
+// import MyCaptcha from './MyCaptcha';
 import { theme, theme_spacing } from '../theme';
 
 export default function Auth() {
@@ -41,49 +41,41 @@ export default function Auth() {
 
   return (
     <View style={styles.container}>
-      <MyCaptcha setCaptachaToken={setCaptchaToken} />
+      {/* <MyCaptcha setCaptachaToken={setCaptchaToken} /> */}
       <View style={[styles.verticallySpaced, styles.mt20]}>
         <Input
-          label="Email"
-          leftIcon={{ type: 'font-awesome', name: 'envelope' }}
           onChangeText={(text) => setEmail(text)}
           value={email}
           placeholder="email@address.com"
           autoCapitalize={'none'}
-          inputStyle={styles.input}
-          labelStyle={styles.label}
-          containerStyle={styles.inputContainer}
+          // inputStyle={styles.input}
+          // labelStyle={styles.label}
+          // containerStyle={styles.inputContainer}
         />
       </View>
       <View style={styles.verticallySpaced}>
         <Input
-          label="Password"
-          leftIcon={{ type: 'font-awesome', name: 'lock' }}
           onChangeText={(text) => setPassword(text)}
           value={password}
           secureTextEntry={true}
           placeholder="Password"
           autoCapitalize={'none'}
-          inputStyle={styles.input}
-          labelStyle={styles.label}
-          containerStyle={styles.inputContainer}
+          // inputStyle={styles.input}
+          // labelStyle={styles.label}
+          // containerStyle={styles.inputContainer}
         />
       </View>
       <View style={[styles.verticallySpaced, styles.mt20]}>
         <Button 
-          title="Sign in" 
-          disabled={loading} 
           onPress={() => signInWithEmail()} 
-          buttonStyle={styles.button}
-        />
+          // buttonStyle={styles.button}
+        >Sign in</Button>
       </View>
       <View style={styles.verticallySpaced}>
         <Button 
-          title="Sign up" 
-          disabled={loading} 
           onPress={() => signUpWithEmail()} 
-          buttonStyle={[styles.button, styles.secondaryButton]}
-        />
+          // buttonStyle={[styles.button, styles.secondaryButton]}
+        >Sign up</Button>
       </View>
     </View>
   )

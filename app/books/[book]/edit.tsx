@@ -1,4 +1,4 @@
-import { Button, Input } from "@rneui/themed";
+import { Button, Input } from "tamagui";
 import { useLocalSearchParams, usePathname, useRouter, useSegments } from "expo-router";
 import { useEffect, useState } from "react";
 import { View } from "react-native";
@@ -35,7 +35,7 @@ export default function EditBook() {
     <View>
       <Input value={title} onChangeText={setTitle}></Input>
       <Input value={author} onChangeText={setAuthor}></Input>
-      <Button title="Save" onPress={() => {
+      <Button onPress={() => {
         console.log("Updating book with author: " + author + " and title: " + title);
         supabase.from('Books').update({ title: title, author: author }).eq('id', Number(book)).then(({ error, status, statusText }) => {
           if (error) {
@@ -45,7 +45,18 @@ export default function EditBook() {
             router.back();
           }
         });
-      }}></Button>
+      }}>Save</Button>
+      <Button onPress={() => {
+        console.log("Deleting book with author: " + author + " and title: " + title);
+        supabase.from('Books').delete().eq('id', Number(book)).then(({ error, status, statusText }) => {
+          if (error) {
+            console.log(error);
+          } else {
+            console.log(status + " Status text: " + statusText);
+            router.back();
+          }
+        });
+      }} color="error">Delete book</Button>
     </View>
   );
 }
