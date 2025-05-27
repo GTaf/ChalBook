@@ -1,11 +1,12 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { Text, View } from 'tamagui';
 import BookShelf from '../../components/Bookshelf';
 import { useState, useEffect } from 'react';
 import { Session } from '@supabase/supabase-js';
 import { supabase } from '../../components/Supabase';
 import Auth from '../../components/Auth';
 import { theme, theme_spacing } from '../../theme';
+import { StyleSheet } from 'react-native';
 
 export default function Home() {
   const [session, setSession] = useState<Session | null>(null);

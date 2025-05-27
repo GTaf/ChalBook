@@ -1,5 +1,5 @@
-import { Input, Button } from 'tamagui';
-import { Modal, View, Text, Pressable, StyleSheet } from 'react-native';
+import { Input, Button, Text, YStack, XStack, Sheet } from 'tamagui';
+import { Pressable, StyleSheet } from 'react-native';
 import { GestureResponderEvent } from 'react-native';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useState, useEffect } from 'react';
@@ -43,72 +43,45 @@ export default function AddBook({ isVisible, onClose }: AddBookProp) {
     }
 
     return (
-        <Modal animationType="slide" transparent={true} visible={isVisible}>
-            <View style={styles.modalContent}>
-                <View style={styles.titleContainer}>
-                    <Text style={styles.title}>Ajouter un nouveau livre</Text>
+        <Sheet
+            modal
+            snapPoints={[50, 0]}
+            animation="snap"
+            open={isVisible}
+            dismissOnSnapToBottom
+            position={0}
+        >
+            <Sheet.Frame padding="$4">
+            <YStack gap="$2">
+                <XStack borderRadius="$4" padding="$4" justifyContent="space-between" backgroundColor="$color6">
+                    <Text>Ajouter un nouveau livre</Text>
                     <Pressable onPress={onClose}>
                         <MaterialIcons name="close" color={theme.colors.text} size={22} />
                     </Pressable>
-                </View>
+                </XStack>
                 <Input 
                     placeholder="Titre" 
+                    size="$6"
                     onChangeText={(text) => setTitle(text)} 
                 />
                 <Input 
                     placeholder="Auteur" 
+                    size="$6"
                     onChangeText={(text) => setAuthor(text)} 
                 />
                 <Button 
                     disabled={loading} 
                     onPress={() => registerBook({ title, author })}
                 >Ajouter</Button>
-            </View>
-        </Modal>
+            </YStack>
+            </Sheet.Frame>
+        </Sheet>
     );
 }
 
 const styles = StyleSheet.create({
-    modalContent: {
-        height: '50%',
-        width: '100%',
-        backgroundColor: theme.colors.primary,
-        borderTopRightRadius: 18,
-        borderTopLeftRadius: 18,
-        position: 'absolute',
-        bottom: 0,
-    },
-    titleContainer: {
-        height: '10%',
-        backgroundColor: theme.colors.primary,
-        borderTopRightRadius: 10,
-        borderTopLeftRadius: 10,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        paddingHorizontal: theme_spacing.lg,
-    },
     title: {
         color: theme.colors.text,
         ...theme.fonts.regular,
-    },
-    pickerContainer: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        paddingHorizontal: theme_spacing.xl,
-        paddingVertical: theme_spacing.xl,
-    },
-    inputText: {
-        color: theme.colors.text,
-    },
-    label: {
-        color: theme.colors.text,
-    },
-    button: {
-        backgroundColor: theme.colors.primary,
-        borderRadius: 8,
-        padding: theme_spacing.md,
-        marginHorizontal: theme_spacing.md,
     },
 });

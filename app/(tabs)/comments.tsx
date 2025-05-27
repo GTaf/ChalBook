@@ -1,4 +1,5 @@
-import { View, Text, FlatList } from "react-native";
+import { Text, FlatList } from "react-native";
+import { YStack } from "tamagui";
 import { Tables } from "../../components/database.type";
 import { useEffect, useState } from "react";
 import { supabase } from "../../components/Supabase";
@@ -17,12 +18,12 @@ export default function Comments() {
     }, []);
 
     return (
-        <View>
+        <YStack>
             <Text>Comments</Text>
             <FlatList
             data={comments}
             renderItem={({item}) => {return <Comment content={item.content} type={item.content_type} />}}
             />
-        </View>
+        </YStack>
     )
 }

@@ -1,7 +1,6 @@
-import { Button, Input } from "tamagui";
+import { Button, Input, YStack } from "tamagui";
 import { useLocalSearchParams, usePathname, useRouter, useSegments } from "expo-router";
 import { useEffect, useState } from "react";
-import { View } from "react-native";
 import { supabase } from "../../../components/Supabase";
 import { Tables } from "../../../components/database.type";
 
@@ -32,7 +31,7 @@ export default function EditBook() {
   }, [book]);
 
   return (
-    <View>
+    <YStack gap="$4" padding="$4">
       <Input value={title} onChangeText={setTitle}></Input>
       <Input value={author} onChangeText={setAuthor}></Input>
       <Button onPress={() => {
@@ -57,6 +56,6 @@ export default function EditBook() {
           }
         });
       }} color="error">Delete book</Button>
-    </View>
+    </YStack>
   );
 }
