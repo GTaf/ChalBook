@@ -12,6 +12,7 @@ import { useFonts, RobotoMono_700Bold } from '@expo-google-fonts/roboto-mono';
 import React from 'react';
 import { theme } from '../../theme';
 import { MaterialIcons } from '@expo/vector-icons';
+import EditBook from '../../components/EditBook';
 
 export default function Page() {
   const { book_id } = useLocalSearchParams();
@@ -20,6 +21,7 @@ export default function Page() {
   const [cover, setCover] = useState<string | null>(null);
   const [bookId, setBookId] = useState<number | null>(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isEditModalVisible, setIsEditModalVisible] = useState(false);
   const [comments, setComments] = useState<([string, string])[]>([]);
   const router = useRouter();
 
@@ -71,7 +73,7 @@ export default function Page() {
           <Text style={styles.author}>{author}</Text>
         </View>
         <View>
-          <Pressable onPress={()=>{router.push(`/books/${book_id}/edit`)}}>
+          <Pressable onPress={()=>{setIsEditModalVisible(true)}}>
             <MaterialIcons name="mode-edit" color={theme.colors.text} size={22} />
           </Pressable>
         </View>
@@ -83,6 +85,14 @@ export default function Page() {
           onClose={() => setIsModalVisible(false)} 
           book_id={bookId}
           onCommentAdded={loadComments}
+        />
+      ) : null}
+
+{bookId ? (
+        <EditBook
+          isVisible={isEditModalVisible}
+          onClose={() => setIsEditModalVisible(false)}
+          bookId={bookId}
         />
       ) : null}
 
