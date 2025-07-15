@@ -23,7 +23,6 @@ export default function Page() {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
   const [comments, setComments] = useState<([string, string])[]>([]);
-  const router = useRouter();
 
   let [fontsLoaded] = useFonts({
     RobotoMono_700Bold,

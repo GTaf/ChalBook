@@ -13,6 +13,8 @@ export default function Layout() {
     return null;
   }
 
+  global.Buffer = require('buffer').Buffer;
+
   const config = createTamagui(defaultConfig);
 
   return (
