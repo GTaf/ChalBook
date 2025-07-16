@@ -9,7 +9,6 @@ export default function Comment({content, type} : CommentProp) {
     let style = styles.defaultStyle;
     if (type === "quote") {
         style = styles.quoteStyle;
-        console.log("beatiful quote")
     }
     return (<View style={styles.commentContainer}>
         <Text style={style}>{content}</Text>
@@ -20,6 +19,7 @@ export default function Comment({content, type} : CommentProp) {
 const styles = StyleSheet.create({
     commentContainer: {
         margin: 5,
+        padding: 5,
         borderWidth: 1,
         borderRadius: 5,
         width: "95%",
