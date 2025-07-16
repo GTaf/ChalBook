@@ -94,12 +94,10 @@ async function uploadImage(uri: string, bookId: number) {
   const fileExt = uri.split(".").pop();
   const fileName = `${bookId}-${Date.now()}.${fileExt}`;
   const filePath = `${fileName}`;
-  console.log("Coucou1");
 
   const fileData = await FileSystem.readAsStringAsync(uri, {
     encoding: FileSystem.EncodingType.Base64,
   });
-  console.log("Coucou2");
 
   try {
   const { error } = await supabase.storage

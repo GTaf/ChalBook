@@ -8,6 +8,7 @@ import { useEffect, useState, useCallback } from 'react';
 import { Tables } from '../../components/database.type';
 import AddComment from "../../components/AddComment";
 import Comment from '../../components/Comment';
+import EditComment from '../../components/EditComment';
 import { useFonts, RobotoMono_700Bold } from '@expo-google-fonts/roboto-mono';
 import React from 'react';
 import { theme } from '../../theme';
@@ -22,25 +23,29 @@ export default function Page() {
   const [bookId, setBookId] = useState<number | null>(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
-  const [comments, setComments] = useState<([string, string])[]>([]);
+  const [comments, setComments] = useState<Tables<'Comments'>[]>([]);
+  const [editCommentModalVisible, setEditCommentModalVisible] = useState(false);
+  const [selectedComment, setSelectedComment] = useState<Tables<'Comments'> | null>(null);
+  const [refreshing, setRefreshing] = useState(false);
 
   let [fontsLoaded] = useFonts({
     RobotoMono_700Bold,
   });
 
-  const loadComments = useCallback(async () => {
+  const fetchComments = async () => {
     if (bookId) {
-      const { data } = await supabase
+        const { data } = await supabase
         .from('Comments')
         .select()
         .eq('book_id', bookId)
         .returns<Tables<'Comments'>[]>();
-      
       if (data !== null) {
-        setComments(data.map((comment) => [comment.content, comment.content_type]));
+        setComments(data);
       }
     }
-  }, [bookId]);
+    };
+
+  const loadComments = useCallback(fetchComments, [bookId]);
 
   useEffect(() => {
     if (!Number.isNaN(book_id)) {
@@ -56,6 +61,12 @@ export default function Page() {
       loadComments();
     }
   }, [book_id, loadComments]);
+
+  const onRefresh = async () => {
+        setRefreshing(true);
+        await loadComments();
+        setRefreshing(false);
+    };
 
   if (!fontsLoaded) {
     return null;
@@ -98,8 +109,29 @@ export default function Page() {
       <FlatList
         style={styles.commentsContainer}
         data={comments}
-        renderItem={({ item }) => <Comment content={item[0]} type={item[1]} />}
+        keyExtractor={item => item.id.toString()}
+        onRefresh={onRefresh}
+        refreshing={refreshing}
+        renderItem={({ item }) => (
+          <Comment
+            content={item.content}
+            type={item.content_type}
+            onLongPress={() => {
+              setSelectedComment(item);
+              setEditCommentModalVisible(true);
+            }}
+          />
+        )}
       />
+      {selectedComment && (
+        <EditComment
+          isVisible={editCommentModalVisible}
+          onClose={() => setEditCommentModalVisible(false)}
+          comment={selectedComment}
+          onCommentUpdated={loadComments}
+          onCommentDeleted={loadComments}
+        />
+      )}
 
       <Button 
         color={theme.colors.primary} 

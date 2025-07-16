@@ -15,7 +15,13 @@ export default function BookOnShelf({ title, cover, book_id }: BookOnShelfProp) 
         <Link href={{pathname: "/books/[book]", params: {book_id: book_id}}} asChild>
             <Pressable>
             <View style={styles.innerContainer}>
-                {cover ? <Image source={ {uri : cover} } style={styles.bookCover} /> : <></>}
+                {cover ? (
+                    <Image source={{ uri: cover }} style={styles.bookCover} />
+                ) : (
+                    <View style={[styles.bookCover, {backgroundColor: theme.colors.background, borderWidth: 1, borderColor: theme.colors.border, justifyContent: 'center', alignItems: 'center'}]}>
+                        <Text style={{color: theme.colors.text, opacity: 0.3}}>Pas de couverture</Text>
+                    </View>
+                )}
                 <Text style={styles.title} numberOfLines={2}>{title}</Text>
             </View>
             </Pressable>
@@ -39,6 +45,7 @@ const styles = StyleSheet.create({
         borderColor: theme.colors.border,
         borderRadius: 8,
         width: 140,
+        height: 240, // fixed height for all items
         backgroundColor: theme.colors.card,
         margin: theme_spacing.xs,
         padding: theme_spacing.sm,

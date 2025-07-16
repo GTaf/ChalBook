@@ -25,7 +25,6 @@ export default function Home() {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>ChalBook</Text>
-      {session && session.user ? <Text style={styles.userText}>User id is: {session.user.id}</Text> : <Auth/>}
       <BookShelf/>
       <StatusBar style="auto" />
     </View>

@@ -33,7 +33,8 @@ export default function BookShelf() {
             <View style={styles.bookShelf}>
                 <FlatList
                     data={books}
-                    horizontal={true}
+                    horizontal={false}
+                    numColumns={2}
                     showsHorizontalScrollIndicator={false}
                     contentContainerStyle={styles.listContent}
                     renderItem={({ item }) => (
@@ -71,6 +72,8 @@ const styles = StyleSheet.create({
     },
     listContent: {
         paddingHorizontal: theme_spacing.md,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     buttonContainer: {
         marginVertical: theme_spacing.md,

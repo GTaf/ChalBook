@@ -1,18 +1,24 @@
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Pressable } from 'react-native';
+
 
 interface CommentProp {
     content: string | null;
     type: string;
+    onLongPress?: () => void;
 }
 
-export default function Comment({content, type} : CommentProp) {
+export default function Comment({content, type, onLongPress} : CommentProp) {
     let style = styles.defaultStyle;
     if (type === "quote") {
         style = styles.quoteStyle;
     }
-    return (<View style={styles.commentContainer}>
-        <Text style={style}>{content}</Text>
-    </View>)
+    return (
+        <Pressable onLongPress={onLongPress} delayLongPress={300}>
+            <View style={styles.commentContainer}>
+                <Text style={style}>{content}</Text>
+            </View>
+        </Pressable>
+    )
 }
 
 
