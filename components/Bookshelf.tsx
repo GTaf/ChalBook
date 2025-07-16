@@ -9,14 +9,24 @@ import { theme, theme_spacing } from "../theme";
 export default function BookShelf() {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [books, setBooks] = useState<Tables<'Books'>[]>([]);
+    const [refreshing, setRefreshing] = useState(false);
+
+    const fetchBooks = async () => {
+        const { data } = await supabase.from('Books').select();
+        if (data !== null) {
+            setBooks(data);
+        }
+    };
 
     useEffect(() => {
-        supabase.from('Books').select().then(({ data }) => {
-            if (data !== null) {
-                setBooks(data);
-            }
-        })
-    }, [])
+        fetchBooks();
+    }, []);
+
+    const onRefresh = async () => {
+        setRefreshing(true);
+        await fetchBooks();
+        setRefreshing(false);
+    };
 
     return (
         <View style={styles.container}>
@@ -33,6 +43,8 @@ export default function BookShelf() {
                             book_id={item.id.toString()} 
                         />
                     )}
+                    refreshing={refreshing}
+                    onRefresh={onRefresh}
                 />
             </View>
             <View style={styles.buttonContainer}>
