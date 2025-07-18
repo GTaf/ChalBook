@@ -4,27 +4,41 @@ import { supabase } from './Supabase'
 import { Button, Input } from 'tamagui'
 // import MyCaptcha from './MyCaptcha';
 import { theme, theme_spacing } from '../theme';
+import { router } from 'expo-router';
 
-export default function Auth() {
+import { useSession } from './AuthCtx';
+
+interface AuthProps {
+  onSuccess: () => void;
+}
+
+export default function Auth({onSuccess} : AuthProps) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
   const [captchaToken, setCaptchaToken] = useState('');
 
-  async function signInWithEmail() {    
-    setLoading(true)
+  const { login } = useSession();
+
+  
+
+  async function signInWithEmail() {
     const { error } = await supabase.auth.signInWithPassword({
       email: email,
       password: password,
       options: { captchaToken }
     })
 
-    if (error) Alert.alert(error.message)
-    setLoading(false)
+    if (error) {Alert.alert(error.message)} else {
+      supabase.auth.getSession().then(({ data: { session } }) => {
+        if(session) {
+          login(session);
+          onSuccess();
+        }
+      });
+    }
   }
 
   async function signUpWithEmail() {
-    setLoading(true)
     const {
       data: { session },
       error,
@@ -36,21 +50,16 @@ export default function Auth() {
 
     if (error) Alert.alert(error.message)
     if (!session) Alert.alert('Please check your inbox for email verification!')
-    setLoading(false)
   }
 
   return (
     <View style={styles.container}>
-      {/* <MyCaptcha setCaptachaToken={setCaptchaToken} /> */}
       <View style={[styles.verticallySpaced, styles.mt20]}>
         <Input
           onChangeText={(text) => setEmail(text)}
           value={email}
           placeholder="email@address.com"
           autoCapitalize={'none'}
-          // inputStyle={styles.input}
-          // labelStyle={styles.label}
-          // containerStyle={styles.inputContainer}
         />
       </View>
       <View style={styles.verticallySpaced}>
@@ -60,21 +69,16 @@ export default function Auth() {
           secureTextEntry={true}
           placeholder="Password"
           autoCapitalize={'none'}
-          // inputStyle={styles.input}
-          // labelStyle={styles.label}
-          // containerStyle={styles.inputContainer}
         />
       </View>
       <View style={[styles.verticallySpaced, styles.mt20]}>
         <Button 
           onPress={() => signInWithEmail()} 
-          // buttonStyle={styles.button}
         >Sign in</Button>
       </View>
       <View style={styles.verticallySpaced}>
         <Button 
-          onPress={() => signUpWithEmail()} 
-          // buttonStyle={[styles.button, styles.secondaryButton]}
+          onPress={() => signUpWithEmail()}
         >Sign up</Button>
       </View>
     </View>

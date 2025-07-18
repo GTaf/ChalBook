@@ -5,22 +5,28 @@ import { useState, useEffect } from "react";
 import { supabase } from "./Supabase";
 import { Tables } from "./database.type";
 import { theme, theme_spacing } from "../theme";
+import { Session } from "@supabase/supabase-js";
+import { useSession } from "./AuthCtx";
 
 export default function BookShelf() {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [books, setBooks] = useState<Tables<'Books'>[]>([]);
     const [refreshing, setRefreshing] = useState(false);
+    const { session } = useSession();
 
     const fetchBooks = async () => {
-        const { data } = await supabase.from('Books').select();
-        if (data !== null) {
-            setBooks(data);
+        if (session?.user.id != null) {
+            console.log("Fetching books for user: " + session.user.id);
+            const { data } = await supabase.from('Books').select().eq('user_id', session?.user.id);
+            if (data !== null) {
+                setBooks(data);
+            }
         }
     };
 
     useEffect(() => {
         fetchBooks();
-    }, []);
+    }, [session]);
 
     const onRefresh = async () => {
         setRefreshing(true);
@@ -51,7 +57,7 @@ export default function BookShelf() {
             <View style={styles.buttonContainer}>
                 <Button 
                     title='Je lis un nouveau livre' 
-                    onPress={() => setIsModalVisible(true)}
+                    onPress={() => {console.log("Button pressed"); setIsModalVisible(true)}}
                     color={theme.colors.primary}
                 />
             </View>
