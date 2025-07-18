@@ -8,7 +8,7 @@ export default function Home() {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>ChalBook</Text>
-      <BookShelf/>
+      <BookShelf />
       <StatusBar style="auto" />
     </View>
   );
@@ -30,5 +30,5 @@ const styles = StyleSheet.create({
   userText: {
     color: theme.colors.text,
     fontWeight: theme.fonts.regular.fontWeight,
-  }
+  },
 });

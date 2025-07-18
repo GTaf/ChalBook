@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import { Sheet, Button, Input, Text, YStack, XStack } from "tamagui";
-import { Pressable } from "react-native";
-import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import { supabase } from "./Supabase";
-import { theme } from "../theme";
+import React, { useState } from 'react';
+import { Sheet, Button, Input, Text, YStack, XStack } from 'tamagui';
+import { Pressable } from 'react-native';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import { supabase } from './Supabase';
+import { theme } from '../theme';
 
 interface EditCommentProps {
   isVisible: boolean;
@@ -31,9 +31,9 @@ export default function EditComment({
   const handleUpdate = async () => {
     setLoading(true);
     const { error } = await supabase
-      .from("Comments")
+      .from('Comments')
       .update({ content })
-      .eq("id", comment.id);
+      .eq('id', comment.id);
     setLoading(false);
     if (!error && onCommentUpdated) onCommentUpdated();
     onClose();
@@ -42,9 +42,9 @@ export default function EditComment({
   const handleDelete = async () => {
     setLoading(true);
     const { error } = await supabase
-      .from("Comments")
+      .from('Comments')
       .delete()
-      .eq("id", comment.id);
+      .eq('id', comment.id);
     setLoading(false);
     if (!error && onCommentDeleted) onCommentDeleted();
     onClose();

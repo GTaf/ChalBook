@@ -1,4 +1,4 @@
-import { useLocalSearchParams, useRouter } from 'expo-router';
+import { useLocalSearchParams } from 'expo-router';
 import { Image, StyleSheet, FlatList, Pressable } from 'react-native';
 import { Text, View } from 'tamagui';
 import { StatusBar } from 'expo-status-bar';
@@ -6,7 +6,7 @@ import { Button } from 'tamagui';
 import { supabase } from '../../components/Supabase';
 import { useEffect, useState, useCallback } from 'react';
 import { Tables } from '../../components/database.type';
-import AddComment from "../../components/AddComment";
+import AddComment from '../../components/AddComment';
 import Comment from '../../components/Comment';
 import EditComment from '../../components/EditComment';
 import { useFonts, RobotoMono_700Bold } from '@expo-google-fonts/roboto-mono';
@@ -17,24 +17,25 @@ import EditBook from '../../components/EditBook';
 
 export default function Page() {
   const { book_id } = useLocalSearchParams();
-  const [name, setName] = useState("");
-  const [author, setAuthor] = useState("");
+  const [name, setName] = useState('');
+  const [author, setAuthor] = useState('');
   const [cover, setCover] = useState<string | null>(null);
   const [bookId, setBookId] = useState<number | null>(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
   const [comments, setComments] = useState<Tables<'Comments'>[]>([]);
   const [editCommentModalVisible, setEditCommentModalVisible] = useState(false);
-  const [selectedComment, setSelectedComment] = useState<Tables<'Comments'> | null>(null);
+  const [selectedComment, setSelectedComment] =
+    useState<Tables<'Comments'> | null>(null);
   const [refreshing, setRefreshing] = useState(false);
 
-  let [fontsLoaded] = useFonts({
+  const [fontsLoaded] = useFonts({
     RobotoMono_700Bold,
   });
 
   const fetchComments = async () => {
     if (bookId) {
-        const { data } = await supabase
+      const { data } = await supabase
         .from('Comments')
         .select()
         .eq('book_id', bookId)
@@ -43,30 +44,35 @@ export default function Page() {
         setComments(data);
       }
     }
-    };
+  };
 
   const loadComments = useCallback(fetchComments, [bookId]);
 
   useEffect(() => {
     if (!Number.isNaN(book_id)) {
-      supabase.from('Books').select().eq('id', Number(book_id)).returns<Tables<'Books'>[]>().then(({ data }) => {
-        if (data !== null && data[0].title !== null) {
-          setName(data[0].title);
-          setCover(data[0].cover_url);
-          setBookId(data[0].id);
-          setAuthor(data[0].author ? data[0].author : "Auteur inconnu");
-        }
-      });
+      supabase
+        .from('Books')
+        .select()
+        .eq('id', Number(book_id))
+        .returns<Tables<'Books'>[]>()
+        .then(({ data }) => {
+          if (data !== null && data[0].title !== null) {
+            setName(data[0].title);
+            setCover(data[0].cover_url);
+            setBookId(data[0].id);
+            setAuthor(data[0].author ? data[0].author : 'Auteur inconnu');
+          }
+        });
 
       loadComments();
     }
   }, [book_id, loadComments]);
 
   const onRefresh = async () => {
-        setRefreshing(true);
-        await loadComments();
-        setRefreshing(false);
-    };
+    setRefreshing(true);
+    await loadComments();
+    setRefreshing(false);
+  };
 
   if (!fontsLoaded) {
     return null;
@@ -76,29 +82,41 @@ export default function Page() {
     <View style={styles.container}>
       <View style={styles.header}>
         <View style={styles.coverContainer}>
-          {cover ? <Image source={{ uri: cover }} style={styles.bookCover} /> : null}
+          {cover ? (
+            <Image source={{ uri: cover }} style={styles.bookCover} />
+          ) : null}
         </View>
         <View style={styles.titleContainer}>
-          <Text style={styles.title} numberOfLines={2}>{name}</Text>
+          <Text style={styles.title} numberOfLines={2}>
+            {name}
+          </Text>
           <Text style={styles.author}>{author}</Text>
         </View>
         <View>
-          <Pressable onPress={()=>{setIsEditModalVisible(true)}}>
-            <MaterialIcons name="mode-edit" color={theme.colors.text} size={22} />
+          <Pressable
+            onPress={() => {
+              setIsEditModalVisible(true);
+            }}
+          >
+            <MaterialIcons
+              name="mode-edit"
+              color={theme.colors.text}
+              size={22}
+            />
           </Pressable>
         </View>
       </View>
 
       {bookId ? (
-        <AddComment 
-          isVisible={isModalVisible} 
-          onClose={() => setIsModalVisible(false)} 
+        <AddComment
+          isVisible={isModalVisible}
+          onClose={() => setIsModalVisible(false)}
           book_id={bookId}
           onCommentAdded={loadComments}
         />
       ) : null}
 
-{bookId ? (
+      {bookId ? (
         <EditBook
           isVisible={isEditModalVisible}
           onClose={() => setIsEditModalVisible(false)}
@@ -109,7 +127,7 @@ export default function Page() {
       <FlatList
         style={styles.commentsContainer}
         data={comments}
-        keyExtractor={item => item.id.toString()}
+        keyExtractor={(item) => item.id.toString()}
         onRefresh={onRefresh}
         refreshing={refreshing}
         renderItem={({ item }) => (
@@ -133,8 +151,8 @@ export default function Page() {
         />
       )}
 
-      <Button 
-        color={theme.colors.primary} 
+      <Button
+        color={theme.colors.primary}
         onPress={() => setIsModalVisible(true)}
       >
         Nouveau commentaire

@@ -1,6 +1,6 @@
 # Launching
 
-Launch app with 
+Launch app with
 
 npx expo start --tunnel
 
@@ -9,6 +9,7 @@ Build using eas with
 eas build --platform android --profile preview
 
 # TODO
+
 - [x] Add cover through application
 - [x] Delete book
 - [x] Switch to Tamagui

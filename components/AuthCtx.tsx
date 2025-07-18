@@ -1,5 +1,5 @@
-import { Session } from "@supabase/supabase-js";
-import { createContext, PropsWithChildren, use, useContext, useState } from "react";
+import { Session } from '@supabase/supabase-js';
+import { createContext, PropsWithChildren, useContext, useState } from 'react';
 
 const AuthContext = createContext<{
   login: (a: Session) => void;
@@ -8,7 +8,8 @@ const AuthContext = createContext<{
 }>({
   login: () => null,
   logout: () => null,
-  session: null,});
+  session: null,
+});
 
 // This hook can be used to access the user info.
 export function useSession() {
@@ -21,7 +22,7 @@ export function useSession() {
 }
 
 export const SessionProvider = ({ children }: PropsWithChildren) => {
-  const [session, setSession] = useState<Session|null>(null);
+  const [session, setSession] = useState<Session | null>(null);
 
   const login = (session: Session) => {
     setSession(session);

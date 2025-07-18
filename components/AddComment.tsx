@@ -7,14 +7,14 @@ import {
   YStack,
   XStack,
   Sheet,
-} from "tamagui";
-import { Pressable } from "react-native";
-import { GestureResponderEvent } from "react-native";
-import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import { useState, useEffect } from "react";
-import { supabase } from "./Supabase";
-import { Session } from "@supabase/supabase-js";
-import { theme } from "../theme";
+} from 'tamagui';
+import { Pressable } from 'react-native';
+import { GestureResponderEvent } from 'react-native';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import { useState, useEffect } from 'react';
+import { supabase } from './Supabase';
+import { Session } from '@supabase/supabase-js';
+import { theme } from '../theme';
 
 interface AddCommentProp {
   isVisible: boolean;
@@ -30,11 +30,11 @@ interface registerCommentProp {
 }
 
 const Item = styled(ToggleGroup.Item, {
-  color: "$color10",
+  color: '$color10',
 
   focusStyle: {
-    color: "$color1",
-    backgroundColor: "$color12",
+    color: '$color1',
+    backgroundColor: '$color12',
   },
 });
 
@@ -44,12 +44,12 @@ export default function AddComment({
   book_id,
   onCommentAdded,
 }: AddCommentProp) {
-  const [comment, setComment] = useState("");
+  const [comment, setComment] = useState('');
   const [loading, setLoading] = useState(false);
   const [session, setSession] = useState<Session | null>(null);
   const [selectedIndex, setSelectedIndex] = useState(0);
 
-  let labels = ["comment", "quote", "idea"];
+  const labels = ['comment', 'quote', 'idea'];
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -67,11 +67,11 @@ export default function AddComment({
     content_type,
   }: registerCommentProp) {
     setLoading(true);
-    let user_id = session && session.user ? session.user.id : "";
+    const user_id = session && session.user ? session.user.id : '';
     const { error } = await supabase
-      .from("Comments")
+      .from('Comments')
       .insert({ book_id, user_id, content, content_type });
-    console.log("Adding comment : ", error, { book_id, user_id, content });
+    console.log('Adding comment : ', error, { book_id, user_id, content });
     setLoading(false);
 
     if (!error && onCommentAdded) {
@@ -110,7 +110,7 @@ export default function AddComment({
             size="$6"
             flex={1}
             type="single"
-            pressStyle={{ backgroundColor: "red" }}
+            pressStyle={{ backgroundColor: 'red' }}
             defaultValue="comment"
             onValueChange={(value) => {
               setSelectedIndex(labels.indexOf(value));

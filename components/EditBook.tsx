@@ -1,10 +1,11 @@
-import { Input, Button, YStack, Sheet } from "tamagui";
-import { GestureResponderEvent } from "react-native";
-import { useState, useEffect } from "react";
-import { supabase } from "./Supabase";
-import { Tables } from "./database.type";
-import * as ImagePicker from "expo-image-picker";
-import * as FileSystem from "expo-file-system";
+import { Input, Button, YStack, Sheet } from 'tamagui';
+import { GestureResponderEvent } from 'react-native';
+import { useState, useEffect } from 'react';
+import { supabase } from './Supabase';
+import { Tables } from './database.type';
+import { decode } from 'base64-arraybuffer';
+import * as ImagePicker from 'expo-image-picker';
+import * as FileSystem from 'expo-file-system';
 
 interface EditBookProp {
   isVisible: boolean;
@@ -17,16 +18,16 @@ function DeleteBook(
   onClose: ((event: GestureResponderEvent) => void) | null | undefined,
   event: GestureResponderEvent
 ) {
-  console.log("Deleting book " + bookId);
+  console.log('Deleting book ' + bookId);
   supabase
-    .from("Books")
+    .from('Books')
     .delete()
-    .eq("id", Number(bookId))
+    .eq('id', Number(bookId))
     .then(({ error, status, statusText }) => {
       if (error) {
         console.log(error);
       } else {
-        console.log(status + " Status text: " + statusText);
+        console.log(status + ' Status text: ' + statusText);
         if (onClose) {
           onClose(event);
         }
@@ -42,22 +43,22 @@ function UpdateBook(
   author: string
 ) {
   console.log(
-    "Updating book: " +
+    'Updating book: ' +
       bookId +
-      " with title: " +
+      ' with title: ' +
       title +
-      " and author: " +
+      ' and author: ' +
       author
   );
   supabase
-    .from("Books")
+    .from('Books')
     .update({ title: title, author: author })
-    .eq("id", Number(bookId))
+    .eq('id', Number(bookId))
     .then(({ error, status, statusText }) => {
       if (error) {
         console.log(error);
       } else {
-        console.log(status + " Status text: " + statusText);
+        console.log(status + ' Status text: ' + statusText);
         if (onClose) {
           onClose(event);
         }
@@ -72,17 +73,17 @@ function UpdateCover(
   cover_url: string
 ) {
   console.log(
-    "Updating cover for book: " + bookId + " with cover url: " + cover_url
+    'Updating cover for book: ' + bookId + ' with cover url: ' + cover_url
   );
   supabase
-    .from("Books")
+    .from('Books')
     .update({ cover_url: cover_url })
-    .eq("id", Number(bookId))
+    .eq('id', Number(bookId))
     .then(({ error, status, statusText }) => {
       if (error) {
         console.log(error);
       } else {
-        console.log(status + " Status text: " + statusText);
+        console.log(status + ' Status text: ' + statusText);
         if (onClose) {
           onClose(event);
         }
@@ -91,39 +92,38 @@ function UpdateCover(
 }
 
 async function uploadImage(uri: string, bookId: number) {
-  const fileExt = uri.split(".").pop();
+  const fileExt = uri.split('.').pop();
   const fileName = `${bookId}-${Date.now()}.${fileExt}`;
   const filePath = `${fileName}`;
 
   const fileData = await FileSystem.readAsStringAsync(uri, {
-    encoding: FileSystem.EncodingType.Base64,
+    encoding: 'base64',
   });
 
   try {
-  const { error } = await supabase.storage
-    .from("covers")
-    .upload(filePath, Buffer.from(fileData, "base64"), {
-      contentType: "image/jpeg",
-      upsert: true,
-    });
-    console.error("Exception during upload:", error);
+    const { error } = await supabase.storage
+      .from('covers')
+      .upload(filePath, decode(fileData), {
+        contentType: 'image/jpeg',
+        upsert: true,
+      });
   } catch (err) {
-    console.error("Exception during upload:", err);
+    console.error('Exception during upload:', err);
   }
   try {
-  const { data } = supabase.storage.from("covers").getPublicUrl(filePath);
-  return data.publicUrl;
+    const { data } = supabase.storage.from('covers').getPublicUrl(filePath);
+    return data.publicUrl;
   } catch (err) {
-    console.error("Exception url retrieval :", err);
+    console.error('Exception url retrieval :', err);
   }
-  return "";
+  return '';
 }
 
 async function updateBookCover(bookId: number, imageUrl: string) {
   const { error } = await supabase
-    .from("Books")
+    .from('Books')
     .update({ cover_url: imageUrl })
-    .eq("id", bookId);
+    .eq('id', bookId);
   if (error) throw error;
 }
 
@@ -134,13 +134,11 @@ async function handleUpdateCover(bookId: number) {
 
   const publicUrl = await uploadImage(uri, bookId);
   await updateBookCover(bookId, publicUrl);
-
-  console.log("Cover updated!");
 }
 
 async function pickImage() {
   const result = await ImagePicker.launchImageLibraryAsync({
-    mediaTypes: ["images"],
+    mediaTypes: ['images'],
     allowsEditing: false,
     quality: 1,
   });
@@ -153,22 +151,22 @@ async function pickImage() {
 }
 
 export default function EditBook({ isVisible, onClose, bookId }: EditBookProp) {
-  const [title, setTitle] = useState("");
-  const [author, setAuthor] = useState("");
+  const [title, setTitle] = useState('');
+  const [author, setAuthor] = useState('');
 
   useEffect(() => {
-    console.log("Book id is: " + bookId);
+    console.log('Book id is: ' + bookId);
     if (!Number.isNaN(bookId)) {
       supabase
-        .from("Books")
+        .from('Books')
         .select()
-        .eq("id", Number(bookId))
-        .returns<Tables<"Books">[]>()
+        .eq('id', Number(bookId))
+        .returns<Tables<'Books'>[]>()
         .then(({ data }) => {
           console.log(data);
           if (data !== null && data[0].title !== null) {
             setTitle(data[0].title);
-            setAuthor(data[0].author ? data[0].author : "Auteur inconnu");
+            setAuthor(data[0].author ? data[0].author : 'Auteur inconnu');
           }
         });
     }
@@ -204,7 +202,7 @@ export default function EditBook({ isVisible, onClose, bookId }: EditBookProp) {
           </Button>
           <Button
             onPress={(event) => {
-              console.log("Coucou");
+              console.log('Coucou');
               handleUpdateCover(bookId).then(() => {
                 if (onClose) {
                   onClose(event);

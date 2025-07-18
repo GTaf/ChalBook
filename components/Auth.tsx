@@ -1,10 +1,9 @@
-import React, { useState } from 'react'
-import { Alert, StyleSheet, View, Dimensions } from 'react-native'
-import { supabase } from './Supabase'
-import { Button, Input } from 'tamagui'
+import React, { useState } from 'react';
+import { Alert, StyleSheet, View, Dimensions } from 'react-native';
+import { supabase } from './Supabase';
+import { Button, Input } from 'tamagui';
 // import MyCaptcha from './MyCaptcha';
 import { theme, theme_spacing } from '../theme';
-import { router } from 'expo-router';
 
 import { useSession } from './AuthCtx';
 
@@ -12,25 +11,23 @@ interface AuthProps {
   onSuccess: () => void;
 }
 
-export default function Auth({onSuccess} : AuthProps) {
+export default function Auth({ onSuccess }: AuthProps) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [captchaToken, setCaptchaToken] = useState('');
 
   const { login } = useSession();
-
-  
 
   async function signInWithEmail() {
     const { error } = await supabase.auth.signInWithPassword({
       email: email,
       password: password,
-      options: { captchaToken }
-    })
+    });
 
-    if (error) {Alert.alert(error.message)} else {
+    if (error) {
+      Alert.alert(error.message);
+    } else {
       supabase.auth.getSession().then(({ data: { session } }) => {
-        if(session) {
+        if (session) {
           login(session);
           onSuccess();
         }
@@ -45,11 +42,11 @@ export default function Auth({onSuccess} : AuthProps) {
     } = await supabase.auth.signUp({
       email: email,
       password: password,
-      options: { captchaToken }
-    })
+    });
 
-    if (error) Alert.alert(error.message)
-    if (!session) Alert.alert('Please check your inbox for email verification!')
+    if (error) Alert.alert(error.message);
+    if (!session)
+      Alert.alert('Please check your inbox for email verification!');
   }
 
   return (
@@ -72,17 +69,13 @@ export default function Auth({onSuccess} : AuthProps) {
         />
       </View>
       <View style={[styles.verticallySpaced, styles.mt20]}>
-        <Button 
-          onPress={() => signInWithEmail()} 
-        >Sign in</Button>
+        <Button onPress={() => signInWithEmail()}>Sign in</Button>
       </View>
       <View style={styles.verticallySpaced}>
-        <Button 
-          onPress={() => signUpWithEmail()}
-        >Sign up</Button>
+        <Button onPress={() => signUpWithEmail()}>Sign up</Button>
       </View>
     </View>
-  )
+  );
 }
 
 const { width } = Dimensions.get('window');
@@ -123,4 +116,4 @@ const styles = StyleSheet.create({
   secondaryButton: {
     backgroundColor: theme.colors.primary,
   },
-})
+});
