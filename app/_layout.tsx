@@ -1,6 +1,6 @@
 import { useFonts, RobotoMono_700Bold } from '@expo-google-fonts/roboto-mono';
 import { Stack } from 'expo-router';
-import { createTamagui, TamaguiProvider, View } from 'tamagui';
+import { TamaguiProvider, View } from 'tamagui';
 import { PortalProvider } from '@tamagui/portal';
 import config from '../tamagui.config';
 import { SessionProvider, useSession } from '../components/AuthCtx';
@@ -15,7 +15,7 @@ export default function Layout() {
   }
 
   return (
-    <TamaguiProvider config={config}>
+    <TamaguiProvider config={config} defaultTheme="light">
       <PortalProvider>
       <SessionProvider>
         <RootNavigator />
