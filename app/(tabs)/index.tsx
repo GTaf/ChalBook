@@ -5,7 +5,7 @@ import BookShelf from '../../components/Bookshelf';
 export default function Home() {
   return (
     <YStack flex={1} backgroundColor="$background" alignItems="center" justifyContent="center">
-      <Text fontFamily="RobotoMono_700Bold" color="$primary" marginTop="$xl">
+      <Text color="$primary" marginTop="$xl">
         ChalBook
       </Text>
       <BookShelf />
