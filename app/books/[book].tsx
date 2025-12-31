@@ -1,8 +1,7 @@
 import { useLocalSearchParams } from 'expo-router';
-import { Image, StyleSheet, FlatList, Pressable } from 'react-native';
-import { Text, View } from 'tamagui';
+import { Image, FlatList, Pressable } from 'react-native';
+import { Text, View, YStack, XStack, Button } from 'tamagui';
 import { StatusBar } from 'expo-status-bar';
-import { Button } from 'tamagui';
 import { supabase } from '../../components/Supabase';
 import { useEffect, useState, useCallback } from 'react';
 import { Tables } from '../../components/database.type';
@@ -11,7 +10,6 @@ import Comment from '../../components/Comment';
 import EditComment from '../../components/EditComment';
 import { useFonts, RobotoMono_700Bold } from '@expo-google-fonts/roboto-mono';
 import React from 'react';
-import { theme } from '../../theme';
 import { MaterialIcons } from '@expo/vector-icons';
 import EditBook from '../../components/EditBook';
 
@@ -79,19 +77,32 @@ export default function Page() {
   }
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <View style={styles.coverContainer}>
+    <YStack flex={1} background="$background" paddingStart="$2">
+      <XStack
+        paddingStart="$2"
+        marginEnd="$2"
+        background="$color.card"
+        borderRadius="$radius.3"
+        alignItems="center"
+      >
+        <View width={100} marginRight="$3">
           {cover ? (
-            <Image source={{ uri: cover }} style={styles.bookCover} />
+            <Image source={{ uri: cover }} style={{ height: 150, width: 100, resizeMode: 'contain' }} />
           ) : null}
         </View>
-        <View style={styles.titleContainer}>
-          <Text style={styles.title} numberOfLines={2}>
+        <YStack flex={1} justify="center">
+          <Text
+            fontSize={18}
+            marginBottom="$1"
+            color="$color.text"
+            numberOfLines={2}
+          >
             {name}
           </Text>
-          <Text style={styles.author}>{author}</Text>
-        </View>
+          <Text fontSize={14} color="$color.text" opacity={0.8}>
+            {author}
+          </Text>
+        </YStack>
         <View>
           <Pressable
             onPress={() => {
@@ -100,12 +111,12 @@ export default function Page() {
           >
             <MaterialIcons
               name="mode-edit"
-              color={theme.colors.text}
+              color="$color.text"
               size={22}
             />
           </Pressable>
         </View>
-      </View>
+      </XStack>
 
       {bookId ? (
         <AddComment
@@ -125,7 +136,6 @@ export default function Page() {
       ) : null}
 
       <FlatList
-        style={styles.commentsContainer}
         data={comments}
         keyExtractor={(item) => item.id.toString()}
         onRefresh={onRefresh}
@@ -152,58 +162,15 @@ export default function Page() {
       )}
 
       <Button
-        color={theme.colors.primary}
+        background="$color.primary"
+        color="$color.text"
         onPress={() => setIsModalVisible(true)}
       >
         Nouveau commentaire
       </Button>
       <StatusBar style="auto" />
-    </View>
+    </YStack>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: theme.colors.background,
-    flex: 1,
-    padding: 10,
-  },
-  header: {
-    flexDirection: 'row',
-    padding: 10,
-    marginBottom: 10,
-    backgroundColor: theme.colors.card,
-    borderRadius: 8,
-  },
-  coverContainer: {
-    width: 100,
-    marginRight: 15,
-  },
-  bookCover: {
-    height: 150,
-    width: 100,
-    resizeMode: 'contain',
-  },
-  titleContainer: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  title: {
-    fontFamily: 'RobotoMono_700Bold',
-    fontSize: 18,
-    marginBottom: 5,
-    color: theme.colors.text,
-  },
-  author: {
-    fontSize: 14,
-    color: theme.colors.text,
-    opacity: 0.8,
-  },
-  commentsContainer: {
-    flex: 1,
-  },
-  addButton: {
-    margin: 10,
-    paddingHorizontal: 20,
-  },
-});
+

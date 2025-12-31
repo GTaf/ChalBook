@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
-import { Alert, StyleSheet, View, Dimensions } from 'react-native';
+import { Alert, Dimensions } from 'react-native';
 import { supabase } from './Supabase';
-import { Button, Input } from 'tamagui';
-// import MyCaptcha from './MyCaptcha';
-import { theme, theme_spacing } from '../theme';
+import { Button, Input, YStack, XStack } from 'tamagui';
 
 import { useSession } from './AuthCtx';
 
@@ -49,17 +47,27 @@ export default function Auth({ onSuccess }: AuthProps) {
       Alert.alert('Please check your inbox for email verification!');
   }
 
+  const { width } = Dimensions.get('window');
+  const containerWidth = Math.min(width * 0.9, 400); // 90% of screen width or max 400px
+
   return (
-    <View style={styles.container}>
-      <View style={[styles.verticallySpaced, styles.mt20]}>
+    <YStack
+      backgroundColor="$color.card"
+      borderRadius="$radius.3"
+      width={containerWidth}
+      alignSelf="center"
+      marginTop={32}
+      padding={16}
+    >
+      <YStack paddingTop={24}>
         <Input
           onChangeText={(text) => setEmail(text)}
           value={email}
           placeholder="email@address.com"
           autoCapitalize={'none'}
         />
-      </View>
-      <View style={styles.verticallySpaced}>
+      </YStack>
+      <YStack>
         <Input
           onChangeText={(text) => setPassword(text)}
           value={password}
@@ -67,53 +75,27 @@ export default function Auth({ onSuccess }: AuthProps) {
           placeholder="Password"
           autoCapitalize={'none'}
         />
-      </View>
-      <View style={[styles.verticallySpaced, styles.mt20]}>
-        <Button onPress={() => signInWithEmail()}>Sign in</Button>
-      </View>
-      <View style={styles.verticallySpaced}>
-        <Button onPress={() => signUpWithEmail()}>Sign up</Button>
-      </View>
-    </View>
+      </YStack>
+      <YStack paddingStart={24}>
+        <Button
+          backgroundColor="$color.primary"
+          color="$color.text"
+          onPress={() => signInWithEmail()}
+        >
+          Sign in
+        </Button>
+      </YStack>
+      <YStack>
+        <Button
+          backgroundColor="$color.primary"
+          color="$color.text"
+          onPress={() => signUpWithEmail()}
+        >
+          Sign up
+        </Button>
+      </YStack>
+    </YStack>
   );
 }
 
-const { width } = Dimensions.get('window');
-const containerWidth = Math.min(width * 0.9, 400); // 90% of screen width or max 400px
 
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: theme.colors.card,
-    borderRadius: 8,
-    width: containerWidth,
-    alignSelf: 'center',
-    marginTop: theme_spacing.xl,
-    padding: theme_spacing.md,
-  },
-  verticallySpaced: {
-    alignSelf: 'stretch',
-    paddingTop: theme_spacing.xs,
-    paddingBottom: theme_spacing.xs,
-  },
-  mt20: {
-    marginTop: theme_spacing.lg,
-  },
-  input: {
-    color: theme.colors.text,
-  },
-  label: {
-    color: theme.colors.text,
-  },
-  inputContainer: {
-    paddingHorizontal: 0,
-  },
-  button: {
-    backgroundColor: theme.colors.primary,
-    borderRadius: 8,
-    width: '100%',
-    padding: theme_spacing.md,
-  },
-  secondaryButton: {
-    backgroundColor: theme.colors.primary,
-  },
-});

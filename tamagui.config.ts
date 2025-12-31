@@ -26,6 +26,10 @@ const themes = {
 const config = createTamagui({
   ...defaultConfig,
   themes,
+  settings: {
+    ...defaultConfig.settings,
+    onlyAllowShorthands: false,
+  }
 })
 
 export type AppConfig = typeof config
