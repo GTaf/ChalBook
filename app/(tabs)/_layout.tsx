@@ -1,10 +1,12 @@
 import { Tabs } from 'expo-router';
 import FontAwesome from '@expo/vector-icons/FontAwesome5';
-import { theme } from '../../theme';
+
+import {useTheme} from 'tamagui';
 
 export default function TabLayout() {
+  const theme = useTheme();
   return (
-    <Tabs screenOptions={{ tabBarActiveTintColor: theme.colors.primary }}>
+    <Tabs screenOptions={{ tabBarActiveTintColor: theme.primary.get() }}>
       <Tabs.Screen
         name="index"
         options={{

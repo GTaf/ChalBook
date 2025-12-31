@@ -4,8 +4,8 @@ import BookShelf from '../../components/Bookshelf';
 
 export default function Home() {
   return (
-    <YStack flex={1} backgroundColor="$background" alignItems="center" justifyContent="center">
-      <Text color="$primary" marginTop="$xl">
+    <YStack flex={1} background="$background" items={"center"}>
+      <Text color="$primary">
         ChalBook
       </Text>
       <BookShelf />

@@ -5,7 +5,6 @@ import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useState, useEffect } from 'react';
 import { supabase } from './Supabase';
 import { Session } from '@supabase/supabase-js';
-import { theme } from '../theme';
 
 interface AddBookProp {
   isVisible: boolean;
@@ -62,7 +61,7 @@ export default function AddBook({ isVisible, onClose }: AddBookProp) {
           >
             <Text>Ajouter un nouveau livre</Text>
             <Pressable onPress={onClose}>
-              <MaterialIcons name="close" color={theme.colors.text} size={22} />
+              <MaterialIcons name="close" color="$text" size={22} />
             </Pressable>
           </XStack>
           <Input

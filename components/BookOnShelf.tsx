@@ -1,6 +1,6 @@
-import { Text, Pressable, StyleSheet, Image, View } from 'react-native';
+import { Text, Pressable, Image } from 'react-native';
 import { Link } from 'expo-router';
-import { theme, theme_spacing } from '../theme';
+import { YStack, XStack } from 'tamagui';
 import React from 'react';
 
 interface BookOnShelfProp {
@@ -15,72 +15,50 @@ export default function BookOnShelf({
   book_id,
 }: BookOnShelfProp) {
   return (
-    <View style={styles.outerContainer}>
+    <YStack
+      borderWidth={1}
+      borderColor="$border"
+      borderRadius={8}
+      width={140}
+      height={240}
+      backgroundColor="$card"
+      margin="$xs"
+      padding="$sm"
+      alignItems="center"
+      justifyContent="center"
+    >
       <Link
         href={{ pathname: '/books/[book]', params: { book_id: book_id } }}
         asChild
       >
         <Pressable>
-          <View style={styles.innerContainer}>
+          <YStack alignItems="center" justifyContent="center">
             {cover ? (
-              <Image source={{ uri: cover }} style={styles.bookCover} />
+              <Image source={{ uri: cover }} style={{ height: 180, width: 120, resizeMode: 'contain', marginBottom: 8 }} />
             ) : (
-              <View
-                style={[
-                  styles.bookCover,
-                  {
-                    backgroundColor: theme.colors.background,
-                    borderWidth: 1,
-                    borderColor: theme.colors.border,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  },
-                ]}
+              <YStack
+                height={180}
+                width={120}
+                backgroundColor="$background"
+                borderWidth={1}
+                borderColor="$border"
+                justifyContent="center"
+                alignItems="center"
+                marginBottom={8}
               >
-                <Text style={{ color: theme.colors.text, opacity: 0.3 }}>
+                <Text style={{ color: '$text', opacity: 0.3 }}>
                   Pas de couverture
                 </Text>
-              </View>
+              </YStack>
             )}
-            <Text style={styles.title} numberOfLines={2}>
+            <Text style={{ fontFamily: 'RobotoMono_700Bold', color: '$text', textAlign: 'center', fontSize: 12 }} numberOfLines={2}>
               {title}
             </Text>
-          </View>
+          </YStack>
         </Pressable>
       </Link>
-    </View>
+    </YStack>
   );
 }
 
-const styles = StyleSheet.create({
-  bookCover: {
-    height: 180,
-    width: 120,
-    resizeMode: 'contain',
-    marginBottom: theme_spacing.sm,
-  },
-  outerContainer: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderWidth: 1,
-    borderColor: theme.colors.border,
-    borderRadius: 8,
-    width: 140,
-    height: 240, // fixed height for all items
-    backgroundColor: theme.colors.card,
-    margin: theme_spacing.xs,
-    padding: theme_spacing.sm,
-  },
-  innerContainer: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  title: {
-    ...theme.fonts.regular,
-    color: theme.colors.text,
-    textAlign: 'center',
-    fontSize: 12,
-  },
-});
+

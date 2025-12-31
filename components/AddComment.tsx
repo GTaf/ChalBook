@@ -14,7 +14,6 @@ import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useState, useEffect } from 'react';
 import { supabase } from './Supabase';
 import { Session } from '@supabase/supabase-js';
-import { theme } from '../theme';
 
 interface AddCommentProp {
   isVisible: boolean;
@@ -98,7 +97,7 @@ export default function AddComment({
           >
             <Text>Ajouter un nouveau commentaire</Text>
             <Pressable onPress={onClose}>
-              <MaterialIcons name="close" color={theme.colors.card} size={22} />
+              <MaterialIcons name="close" color="$card" size={22} />
             </Pressable>
           </XStack>
           <Input

@@ -3,7 +3,6 @@ import { Sheet, Button, Input, Text, YStack, XStack } from 'tamagui';
 import { Pressable } from 'react-native';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { supabase } from './Supabase';
-import { theme } from '../theme';
 
 interface EditCommentProps {
   isVisible: boolean;
@@ -64,7 +63,7 @@ export default function EditComment({
           <XStack justifyContent="space-between" alignItems="center">
             <Text>Editer le commentaire</Text>
             <Pressable onPress={onClose}>
-              <MaterialIcons name="close" color={theme.colors.card} size={22} />
+              <MaterialIcons name="close" color="$card" size={22} />
             </Pressable>
           </XStack>
           <Input
@@ -84,8 +83,9 @@ export default function EditComment({
             disabled={loading}
             onPress={handleDelete}
             backgroundColor="$red10"
+            color="$color1"
           >
-            <Text color="$color1">Supprimer</Text>
+            Supprimer
           </Button>
           <Text>
             Type: {comment.content_type} | Créé le: {comment.created_at}

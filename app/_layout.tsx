@@ -28,7 +28,7 @@ export default function Layout() {
 function RootNavigator() {
   const { session } = useSession();
   return (
-    <View flex={1} backgroundColor="$background">
+    <View flex={1}>
       <Stack>
         <Stack.Protected guard={!!session}>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />

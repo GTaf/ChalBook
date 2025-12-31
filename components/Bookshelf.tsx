@@ -1,5 +1,5 @@
 import { FlatList } from 'react-native';
-import { Button, View, YStack } from 'tamagui';
+import { Button, View, YStack, useTheme} from 'tamagui';
 import BookOnShelf from './BookOnShelf';
 import AddBook from './AddBook';
 import { useState, useEffect } from 'react';
@@ -12,8 +12,7 @@ export default function BookShelf() {
   const [books, setBooks] = useState<Tables<'Books'>[]>([]);
   const [refreshing, setRefreshing] = useState(false);
   const { session } = useSession();
-
-  console.log('Bookshelf component rendered');
+  const theme = useTheme();
 
   const fetchBooks = async () => {
     try {
@@ -58,8 +57,8 @@ export default function BookShelf() {
   console.log('Session:', session);
 
   return (
-    <YStack flex={1} width="100%" alignItems="center" backgroundColor="$background">
-      <View width="100%" marginVertical="$md" flex={1}>
+    <YStack flex={1} width="100%" items="center" background="$background">
+      <View width="100%" flex={1}>
         <FlatList
           data={books}
           horizontal={false}
@@ -77,13 +76,12 @@ export default function BookShelf() {
           onRefresh={onRefresh}
         />
       </View>
-      <View>
+      <View width="100%">
+        {/* Test with direct color first */}
         <Button
-          backgroundColor="$primary"
-          color="$text"
-          borderColor="$bg"
-          //width="100%"
-          height="$lg"
+          width="100%"
+          background="$color.primary" // Try token again
+          color="$color.text"
           onPress={() => {
             console.log('Button pressed');
             setIsModalVisible(true);
