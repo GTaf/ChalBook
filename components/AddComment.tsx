@@ -75,6 +75,7 @@ export default function AddComment({
 
     if (!error && onCommentAdded) {
       onCommentAdded();
+      setComment('');
     }
   }
 
