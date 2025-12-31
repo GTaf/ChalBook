@@ -2,7 +2,7 @@ import { useFonts, RobotoMono_700Bold } from '@expo-google-fonts/roboto-mono';
 import { Stack } from 'expo-router';
 import { createTamagui, TamaguiProvider, View } from 'tamagui';
 import { PortalProvider } from '@tamagui/portal';
-import { defaultConfig } from '@tamagui/config/v4';
+import config from '../tamagui.config';
 import { SessionProvider, useSession } from '../components/AuthCtx';
 
 export default function Layout() {
@@ -13,8 +13,6 @@ export default function Layout() {
   if (!fontsLoaded) {
     return null;
   }
-
-  const config = createTamagui(defaultConfig);
 
   return (
     <TamaguiProvider config={config}>
