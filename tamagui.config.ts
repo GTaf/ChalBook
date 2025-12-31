@@ -21,18 +21,18 @@ const themes = {
     notification: '#2196F3',
   },
   dark: {
-    ...baseThemes.light,
-    // Override with your paper-like colors
-    bg: '#F5F5F5',
-    color: '#212121',
-    primary: '#795548',
-    card: '#8D6E63',
-    borderColor: '#E0E0E0',
+    ...baseThemes.dark,
+    // Dark paper-like aesthetic
+    bg: '#2E2E2E',
+    color: '#F5F5F5',
+    primary: '#A1887F',
+    card: '#3E2723',
+    borderColor: '#4E342E',
     // Add your custom token colors
-    background: '#F5F5F5',
-    text: '#212121',
-    border: '#E0E0E0',
-    notification: '#2196F3',
+    background: '#2E2E2E',
+    text: '#F5F5F5',
+    border: '#4E342E',
+    notification: '#4FC3F7',
   },
 }
 
@@ -56,6 +56,8 @@ const config = createTamagui({
     gtMd: { minWidth: 1020 + 1 },
     gtLg: { minWidth: 1280 + 1 },
   },
+  shouldAddPrefersColorTheme: true,
+  defaultTheme: 'light',
 })
 
 export type AppConfig = typeof config
