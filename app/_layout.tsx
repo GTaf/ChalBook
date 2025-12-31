@@ -1,7 +1,7 @@
 import { useFonts, RobotoMono_700Bold } from '@expo-google-fonts/roboto-mono';
 import { Stack } from 'expo-router';
-import { theme } from '../theme';
 import { createTamagui, TamaguiProvider, View } from 'tamagui';
+import { PortalProvider } from '@tamagui/portal';
 import { defaultConfig } from '@tamagui/config/v4';
 import { SessionProvider, useSession } from '../components/AuthCtx';
 
@@ -18,9 +18,11 @@ export default function Layout() {
 
   return (
     <TamaguiProvider config={config}>
+      <PortalProvider>
       <SessionProvider>
         <RootNavigator />
       </SessionProvider>
+      </PortalProvider>
     </TamaguiProvider>
   );
 }
@@ -28,7 +30,7 @@ export default function Layout() {
 function RootNavigator() {
   const { session } = useSession();
   return (
-    <View style={{ flex: 1, backgroundColor: theme.colors.background }}>
+    <View flex={1} backgroundColor="$background">
       <Stack>
         <Stack.Protected guard={!!session}>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
